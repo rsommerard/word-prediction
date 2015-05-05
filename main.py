@@ -4,6 +4,7 @@ import string
 import pickle
 import os
 
+
 def extract_unigrams(words):
     unigrams_tab = []
     word1 = ''
@@ -243,8 +244,6 @@ if __name__ == '__main__':
             else:
                 prediction_words = []
 
-            print(prediction_words)
-
             propositions = []
             for i in range(3):
                 best = None
@@ -267,7 +266,10 @@ if __name__ == '__main__':
             _, mot2 = propositions[1]
             _, mot3 = propositions[2]
         else:
-            prediction_words = unigrams[words[-1].lower()]
+            if words[-1].lower() in unigrams:
+                prediction_words = unigrams[words[-1].lower()]
+            else:
+                prediction_words = []
 
             propositions = []
             for i in range(3):
@@ -280,13 +282,13 @@ if __name__ == '__main__':
                     if wunigrams[(words[-1].lower(), word)] > wunigrams[(words[-1].lower(), best)]:
                         best = word
 
-                prediction_words.remove(best)
+                if best != '':
+                    prediction_words.remove(best)
+
                 propositions.append(best)
 
             while(len(propositions) < 3):
                 propositions.append('')
-
-            print(propositions)
 
             mot1 = propositions[0]
             mot2 = propositions[1]
@@ -297,10 +299,10 @@ if __name__ == '__main__':
                 if mot1 == '':
                     print('Pas de propositions.')
                 else:
-                    print('Propositions unigrams: ' + mot1)
+                    print('Propositions: ' + mot1)
             else:
-                print('Propositions unigrams: ' + mot1 + ' | ' + mot2)
+                print('Propositions: ' + mot1 + ' | ' + mot2)
         else:
-            print('Propositions unigrams: ' + mot1 + ' | ' + mot2 + ' | ' + mot3)
+            print('Propositions: ' + mot1 + ' | ' + mot2 + ' | ' + mot3)
 
         sentence = input("Phrase: ")
